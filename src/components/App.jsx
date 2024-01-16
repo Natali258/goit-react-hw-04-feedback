@@ -9,25 +9,23 @@ export const App = () => {
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
   const options = ['good', 'neutral', 'bad'];
+  const total = good + neutral + bad;
+  const positivePercentage = Math.round((good / total) * 100);
 
   const handleChangeClick = options => {
-    if (options === 'good') {
-      setGood(good + 1);
+    switch (options) {
+      case 'good':
+        setGood(good + 1);
+        break;
+      case 'neutral':
+        setNeutral(neutral + 1);
+        break;
+      case 'bad':
+        setBad(bad + 1);
+        break;
+      default:
+        break;
     }
-    if (options === 'neutral') {
-      setNeutral(neutral + 1);
-    }
-    if (options === 'bad') {
-      setBad(bad + 1);
-    }
-  };
-  const countTotalFeedback = () => {
-    return good + neutral + bad;
-  };
-
-  const countPositiveFeedbackPercentage = () => {
-    const total = countTotalFeedback();
-    return Math.round((good / total) * 100);
   };
 
   return (
@@ -36,13 +34,13 @@ export const App = () => {
         <Feedback options={options} onLeaveFeedback={handleChangeClick} />
       </Section>
       <Section title="Statistics">
-        {countTotalFeedback ? (
+        {total ? (
           <Statistics
             good={good}
             neutral={neutral}
             bad={bad}
-            total={countTotalFeedback()}
-            positivePercentage={countPositiveFeedbackPercentage()}
+            total={total}
+            positivePercentage={positivePercentage}
           />
         ) : (
           <Notification message="There is no feedback"></Notification>
